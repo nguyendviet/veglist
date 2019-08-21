@@ -2,13 +2,13 @@
  * All test variables.
  */
 resolve = require('path').resolve;
-const bucket = require('./config').templateBucket;
+const {name, testFolder} = require('./config').buckets.template;
 
 module.exports = {
     uploadTemplates: {
         testFolder : '../cloudformation',
         testType : 'json',
-        testBucket : `${bucket}/test`,
+        testBucket : `${name}/${testFolder}`,
         expectedOutput : [ 
             'api-gateway.json',
             'cognito.json',
