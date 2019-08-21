@@ -2,14 +2,14 @@
  * All test variables.
  */
 resolve = require('path').resolve;
-const {name, testFolder} = require('./config').buckets.template;
-const {folder} = require('./config').stack;
+const uuidv4 = require('uuid/v4');
+const {templateBucketName, templateFolder, rootStack} = require('./config');
 
 module.exports = {
     uploadTemplates: {
-        testFolder : folder,
+        testFolder : templateFolder,
         testType : 'json',
-        testBucket : `${name}/${testFolder}`,
+        testBucket : `${templateBucketName}/test`,
         expectedOutput : [ 
             'api-gateway.json',
             'cognito.json',
@@ -18,5 +18,11 @@ module.exports = {
             'root-stack.json',
             's3-static-website-react.json'
         ]
+    },
+    provision: {
+        testStackName: `test-veglist-${uuidv4()}`,
+        testTemplate: rootStack,
+        templateBucketName: templateBucketName,
+        testTemplateBucketFolder: 'test'
     }
 }
