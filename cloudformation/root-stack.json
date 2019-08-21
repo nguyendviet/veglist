@@ -1,0 +1,143 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "This template uses nested stacks to provision the app. Version: 1.0.0",
+    
+    "Parameters": {
+        "TemplateBucketPath": {
+            "Description": "Path to the S3 bucket contains templates",
+            "Type": "String"
+        }
+    },
+
+    "Resources": {
+        "DynamoDBTable": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "Parameters": {
+                    "TableName": {
+                        "Fn::Sub": "${AWS::StackName}"
+                    }
+                },
+                "TemplateURL": {
+                    "Fn::Sub": "https://s3.amazonaws.com/${TemplateBucketPath}/dynamodb.json"
+                } 
+            }
+        },
+        "S3WebsiteReact": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "Parameters": {
+                    "BucketName": {
+                        "Fn::Sub": "${AWS::StackName}-website"
+                    }
+                },
+                "TemplateURL": {
+                    "Fn::Sub": "https://s3.amazonaws.com/${TemplateBucketPath}/s3-static-website-react.json"
+                } 
+            }
+        },
+        "Cognito": {
+            "Type": "AWS::CloudFormation::Stack",
+            "DependsOn": "DynamoDBTable",
+            "Properties": {
+                "Parameters": {
+                    "CognitoUserPoolName": {
+                        "Fn::Join" : ["",
+                            {
+                                "Fn::Split": ["-", {
+                                    "Ref": "AWS::StackName"
+                                }]
+                            }
+                        ]
+                    }
+                },
+                "TemplateURL": {
+                    "Fn::Sub": "https://s3.amazonaws.com/${TemplateBucketPath}/cognito.json"
+                }
+            }
+        },
+        "ApiGateway": {
+            "Type": "AWS::CloudFormation::Stack",
+            "DependsOn": ["DynamoDBTable", "Cognito"],
+            "Properties": {
+                "Parameters": {
+                    "ApiGatewayName": {
+                        "Fn::Sub": "${AWS::StackName}-api"
+                    },
+                    "CognitoUserPoolArn": {
+                        "Fn::GetAtt": [ "Cognito", "Outputs.UserPoolArn" ]
+                    },
+                    "DynamoDBStack": {
+                        "Fn::GetAtt": [ "DynamoDBTable", "Outputs.DDBStackName" ]
+                    }
+                },
+                "TemplateURL": {
+                    "Fn::Sub": "https://s3.amazonaws.com/${TemplateBucketPath}/api-gateway.json"
+                }
+            }
+        },
+        "IdentityPool": {
+            "Description": "Cognito Identity Pool. Must be created after User Pool and API Gateway.",
+            "Type": "AWS::CloudFormation::Stack",
+            "DependsOn": ["Cognito", "ApiGateway"],
+            "Properties": {
+                "Parameters": {
+                    "AppClientId": {
+                        "Fn::GetAtt": [ "Cognito", "Outputs.AppClientId" ]
+                    },
+                    "UserPoolProviderName": {
+                        "Fn::GetAtt": [ "Cognito", "Outputs.ProviderName" ]
+                    },
+                    "UserPoolName": {
+                        "Fn::GetAtt": [ "Cognito", "Outputs.UserPoolName" ]
+                    },
+                    "ApiGatewayId": {
+                        "Fn::GetAtt": [ "ApiGateway", "Outputs.ApiGatewayId" ]
+                    }
+                },
+                "TemplateURL": {
+                    "Fn::Sub": "https://s3.amazonaws.com/${TemplateBucketPath}/identity-pool.json"
+                }
+            }
+        }
+    },
+
+    "Outputs": {
+        "WebsiteUrl": {
+            "Description": "The URL of the S3 bucket that hosts the front-end.",
+            "Value": {
+                "Fn::GetAtt": [ "S3WebsiteReact", "Outputs.WebsiteURL" ]
+            }
+        },
+        "S3WebsiteBucket": {
+            "Description": "The name of the S3 bucket that hosts the front-end.",
+            "Value": {
+                "Fn::GetAtt": [ "S3WebsiteReact", "Outputs.BucketName" ]
+            }
+        },
+        "ApiInvokeUrl": {
+            "Description": "The invoke URL of the API Gateway.",
+            "Value": {
+                "Fn::GetAtt": [ "ApiGateway", "Outputs.ApiGatewayProdInvokeURL" ]
+            }
+        },
+        "CognitoUserPoolId": {
+            "Description": "The User Pool ID.",
+            "Value": {
+                "Fn::GetAtt": [ "Cognito", "Outputs.UserPoolId" ]
+            }
+        },
+        "CognitoAppClientId": {
+            "Description": "The App Client ID of the User Pool ID.",
+            "Value": {
+                "Fn::GetAtt": [ "Cognito", "Outputs.AppClientId" ]
+            }
+        },
+        "CognitoIdentityPoolId": {
+            "Description": "The Identity Pool ID.",
+            "Value": {
+                "Fn::GetAtt": [ "IdentityPool", "Outputs.IdentityPoolId" ]
+            }
+        }
+    }
+}

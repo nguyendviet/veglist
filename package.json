@@ -1,0 +1,25 @@
+{
+  "name": "veglist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "upload-templates": "node ./helpers/upload-templates.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyendviet/veglist.git"
+  },
+  "keywords": [],
+  "author": "Viet Nguyen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nguyendviet/veglist/issues"
+  },
+  "homepage": "https://github.com/nguyendviet/veglist#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
+  }
+}

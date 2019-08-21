@@ -1,0 +1,4 @@
+- Upload this whole folder (`cloudformation`) to an S3 bucket then use `root-stack.json` to provison the infrastructure.
+- Make sure the S3 bucket has Versioning enabled to prevent errors.
+- If the S3 bucket stores multiple apps' templates, specify folder names in the bucket.
+- The `root-stack.json` doesn't need to be in the bucket, but uploading the whole folder is more convenient.
