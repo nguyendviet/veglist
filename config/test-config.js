@@ -3,10 +3,11 @@
  */
 resolve = require('path').resolve;
 const {name, testFolder} = require('./config').buckets.template;
+const {folder} = require('./config').stack;
 
 module.exports = {
     uploadTemplates: {
-        testFolder : '../cloudformation',
+        testFolder : folder,
         testType : 'json',
         testBucket : `${name}/${testFolder}`,
         expectedOutput : [ 
