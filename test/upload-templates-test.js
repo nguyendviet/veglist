@@ -3,7 +3,7 @@ const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
-const {testType, testFolder, testBucket, expectedOutput} = require('./config').uploadTemplates;
+const {testType, testFolder, testBucket, expectedOutput} = require('../config/test-config').uploadTemplates;
 
 const fs = require('fs');
 process.env.AWS_SDK_LOAD_CONFIG=1;
