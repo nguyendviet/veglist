@@ -20,6 +20,10 @@
   "homepage": "https://github.com/nguyendviet/veglist#readme",
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "mocha": "^6.2.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.514.0"
   }
 }
