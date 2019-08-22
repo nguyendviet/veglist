@@ -69,6 +69,6 @@ describe('Function filterFiles', () => {
 
 describe('Function uploadTemplates', () => {
     it(`should upload files to S3 bucket without errors`, () => {
-        expect(uploadTemplates(testType, testFolder, testBucket)).eventually.to.not.throw(Error);
+       expect(uploadTemplates(testType, testFolder, testBucket)).to.eventually.be.an('array').that.deep.include('Location');
     });
 });

@@ -6,7 +6,7 @@ const expect = chai.expect;
 process.env.AWS_SDK_LOAD_CONFIG=1;
 const AWS = require('aws-sdk');
 const cloudformation = new AWS.CloudFormation({apiVersion: '2010-05-15'});
-const {templateBucketName, testStackName, testTemplate, testTemplateBucketFolder} = require('../config/test-config').provision;
+const {templateBucketName, testStackName, testTemplate, testTemplateBucketFolder} = require('../config/test-config').createTestStack;
 
 /**
  * Function creates CloudFormation root stack.

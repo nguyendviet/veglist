@@ -14,17 +14,18 @@ module.exports = {
             'cognito.json',
             'dynamodb.json',
             'identity-pool.json',
+            "pipeline.json",
             'root-stack.json',
             's3-static-website-react.json'
         ]
     },
-    provision: {
+    createTestStack: {
         testStackName: `test-${appName}-${uuidv4()}`,
         testTemplate: rootStack,
         templateBucketName: templateBucketName,
         testTemplateBucketFolder: 'test'
     },
-    removeTestStack: {
+    deleteTestStack: {
         appName: appName
     }
 }

@@ -4,7 +4,7 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 // const should = chai.should;
 
-const {appName} = require('../config/test-config').removeTestStack;
+const {appName} = require('../config/test-config').deleteTestStack;
 
 process.env.AWS_SDK_LOAD_CONFIG=1;
 const AWS = require('aws-sdk');
