@@ -2,7 +2,7 @@
  * All test variables.
  */
 const uuidv4 = require('uuid/v4');
-const {templateBucketName, templateFolder, rootStack} = require('./config');
+const {appName, templateBucketName, templateFolder, rootStack} = require('./config');
 
 module.exports = {
     uploadTemplates: {
@@ -19,9 +19,12 @@ module.exports = {
         ]
     },
     provision: {
-        testStackName: `test-veglist-${uuidv4()}`,
+        testStackName: `test-${appName}-${uuidv4()}`,
         testTemplate: rootStack,
         templateBucketName: templateBucketName,
         testTemplateBucketFolder: 'test'
+    },
+    removeTestStack: {
+        appName: appName
     }
 }

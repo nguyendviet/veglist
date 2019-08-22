@@ -1,10 +1,12 @@
 ```javascript
 // config.js
-resolve = require('path').resolve;
+const path = require('path');
+
 module.exports = {
+    appName: 'YOUR APP NAME',
     templateBucketName: 'YOUR TEMPLATE BUCKET NAME',
     stackName: 'YOUR STACK NAME',
-    templateFolder: resolve('./cloudformation'),
+    templateFolder: path.join(__dirname, '..', 'cloudformation'),
     rootStack: 'root-stack.json'
 }
 ```
