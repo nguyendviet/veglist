@@ -1,7 +1,6 @@
 /**
  * All test variables.
  */
-resolve = require('path').resolve;
 const uuidv4 = require('uuid/v4');
 const {templateBucketName, templateFolder, rootStack} = require('./config');
 
