@@ -13,12 +13,11 @@ const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 /**
  * Function returns a list of files in a folder,
  * filtered by file type.
- * @param  {...any} params Any param.
+ * @param  {...any} params file type, path to folder.
  */
 const filterFiles = (...params) => {
     if (!params || params.length === 0) console.log('Err: No parameters.');
-    const fileType = params[0];
-    const folder = params[1];
+    const [fileType, folder] = [...params];
     const fileList = fs.readdirSync(folder).filter((file) => {
         let str = file;
         if (str.substring(str.lastIndexOf('.') + 1) === fileType) {
@@ -31,12 +30,11 @@ const filterFiles = (...params) => {
 
 /**
  * Function uploads list of files to S3 bucket.
- * @param  {...any} params Any param.
+ * @param  {...any} params file type, path to folder, bucket name.
  */
-const uploadTemplates = (...params) => {
-    const type = params[0];
-    const folder = params[1];
-    const bucket = params[2];
+const uploadTemplates = (...p) => {
+    if (!p || p.length === 0) console.log('Err: No parametes.');
+    const [type, folder, bucket] = [...p];
     const fileList = filterFiles(type, folder);
     const promises = fileList.map((file) => {
         const params = {

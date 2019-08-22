@@ -36,7 +36,8 @@
         "GitHubToken": {
             "Description": "GitHub Token stored in AWS Systems Manager Parameter Store.",
             "NoEcho": true,
-            "Type": "String"
+            "Type": "String",
+            "Default": "{{resolve:ssm:staticSiteCICDGitHubToken:1}}"
         }
     },
     "Resources": {
@@ -238,6 +239,7 @@
                             "      nodejs: 10",
                             "    commands:",
                             "      - curl -o- -L https://yarnpkg.com/install.sh | bash",
+                            "      - cd client",
                             "      - yarn install",
                             "  pre_build:",
                             "    commands:",

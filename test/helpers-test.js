@@ -3,7 +3,7 @@ const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
-const {uploadTemplates} = require('../helpers/upload-templates');
+const {uploadTemplates} = require('../helpers/templates');
 const {testType, testFolder, testBucket} = require('../config/test-config').uploadTemplates;
 
 describe('Function uploadTemplates', () => {

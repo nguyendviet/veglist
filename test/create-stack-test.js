@@ -2,30 +2,27 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 const expect = chai.expect;
+const {templateBucketName, testStackName, parameters, testTemplate, testTemplateBucketFolder} = require('../config/test-config').createStack;
 
 process.env.AWS_SDK_LOAD_CONFIG=1;
 const AWS = require('aws-sdk');
 const cloudformation = new AWS.CloudFormation({apiVersion: '2010-05-15'});
-const {templateBucketName, testStackName, testTemplate, testTemplateBucketFolder} = require('../config/test-config').createTestStack;
 
 /**
- * Function creates CloudFormation root stack.
+ * Function creates CloudFormation stack.
  * @param {stackName} stackName Name of the CloudFormation stack.
  * @param {template} template CloudFormation template file (json or yml).
  * @param {bucketName} bucketName Template bucket name.
  * @param {bucketFolder} bucketFolder Template bucket folder.
  */
-const createStack = (stackName, template, bucketName, bucketFolder) => {
+const createStack = (...p) => {
+    if (!p || p.length === 0) console.log('Err: No parameters.');
+    const [stackName, template, parameters, bucketName, bucketFolder] = [...p];
     const params = {
         StackName: stackName, /* required */
         Capabilities: ['CAPABILITY_IAM'],
         OnFailure: 'ROLLBACK',
-        Parameters: [
-            {
-                ParameterKey: 'TemplateBucketPath',
-                ParameterValue: `${bucketName}/${bucketFolder}`
-            }
-        ],
+        Parameters: parameters,
         TemplateURL: `https://${bucketName}.s3.amazonaws.com/${bucketFolder}/${template}`,
         TimeoutInMinutes: 30
     };
@@ -34,7 +31,6 @@ const createStack = (stackName, template, bucketName, bucketFolder) => {
         cloudformation.createStack(params, (err, data) => {
             if (err) console.log(err, err.stack);
             else {
-                console.log(data);
                 resolve(data);
             }
         });
@@ -43,6 +39,6 @@ const createStack = (stackName, template, bucketName, bucketFolder) => {
 
 describe('createStack', () => {
     it('should return stack id', () => {
-        expect(createStack(testStackName, testTemplate, templateBucketName, testTemplateBucketFolder)).eventually.to.deep.include('StackId');
+        expect(createStack(testStackName, testTemplate, parameters, templateBucketName, testTemplateBucketFolder)).eventually.to.deep.include('StackId');
     });
 });
