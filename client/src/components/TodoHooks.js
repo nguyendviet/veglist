@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Typography from '@material-ui/core/Typography';
 import {Checkbox, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Quantity from './Quantity';
 
 const useInputState = () => {
     const [value, setValue] = useState('');
@@ -60,12 +61,12 @@ const TodoList = ({ todos, deleteTodo }) => (
             <Checkbox tabIndex={-1} disableRipple />
             <ListItemText primary={todo} />
             <ListItemSecondaryAction>
-            <IconButton
-                aria-label="Delete"
-                onClick={() => {
-                deleteTodo(index);
-                }}
-            >
+                <IconButton
+                    aria-label="Delete"
+                    onClick={() => {
+                    deleteTodo(index);
+                    }}
+                >
                 <DeleteIcon />
             </IconButton>
             </ListItemSecondaryAction>
@@ -92,6 +93,8 @@ const TodoHooksApp = () => {
             }
             }}
         />
+
+        <Quantity/>
 
         <TodoList todos={todos} deleteTodo={deleteTodo} />
         </div>
