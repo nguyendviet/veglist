@@ -146,20 +146,6 @@
                 ]
             }
         },
-        "SiteBucket": {
-            "Type": "AWS::S3::Bucket",
-            "DeletionPolicy": "Delete",
-            "Properties": {
-                "AccessControl": "PublicRead",
-                "BucketName": {
-                    "Ref": "BucketName"
-                },
-                "WebsiteConfiguration": {
-                    "IndexDocument": "index.html",
-                    "ErrorDocument": "index.html"
-                }
-            }
-        },
         "BucketPolicy": {
             "Type": "AWS::S3::BucketPolicy",
             "Properties": {
@@ -177,7 +163,7 @@
                                     [
                                         "arn:aws:s3:::",
                                         {
-                                            "Ref": "SiteBucket"
+                                            "Ref": "BucketName"
                                         },
                                         "/*"
                                     ]
@@ -187,7 +173,7 @@
                     ]
                 },
                 "Bucket": {
-                    "Ref": "SiteBucket"
+                    "Ref": "BucketName"
                 }
             }
         },
@@ -228,9 +214,6 @@
                     "BuildSpec": {
                         "Fn::Join": ["\n", [
                             "version: 0.2",
-                            "env:",
-                            "  #parameter-store:",
-                            "    #MSKEY: 'VALUE'",
                             "phases:",
                             "  install:",
                             "    #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.",
@@ -248,17 +231,13 @@
                             },
                             "  build:",
                             "    commands:",
-                            "    #- export SOME_TOKEN=$MSKEY",
                             "      - yarn build",
-                            "  post_build:",
-                            "    commands:",
-                            "      - cd build",
                             "artifacts:",
                             "  files:",
                             "    - '**/*'",
                             "  name: $(AWS_REGION)-$(date +%Y-%m-%d)",
                             "  discard-paths: no",
-                            "  base-directory: build"
+                            "  base-directory: client/build"
                         ]]
                     }
                 },
@@ -358,7 +337,7 @@
                                 ],
                                 "Configuration": {
                                     "BucketName": {
-                                        "Ref": "SiteBucket"
+                                        "Ref": "BucketName"
                                     },
                                     "Extract": true
                                 },
@@ -386,10 +365,7 @@
         "SiteUrl": {
             "Description": "S3 Website URL",
             "Value": {
-                "Fn::GetAtt": [
-                    "SiteBucket",
-                    "WebsiteURL"
-                ]
+               "Fn::Sub": "http://${BucketName}.s3-website-${AWS::Region}.amazonaws.com"
             }
         }
     }
