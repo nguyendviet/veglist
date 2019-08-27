@@ -59,13 +59,13 @@ const deleteStack = async(name) => {
                 cloudformation.deleteStack(params, (err, data) => {
                     if (err) console.log(err, err.stack); // an error occurred
                     else {
-                        if (data.ResponseMetadata) resolve('All stacks deleted.');
+                        if (data.ResponseMetadata) resolve('200');
                     }
                 });
             });
         });
     }
-    else return 'All stacks deleted.';
+    else return '200';
 };
 
 module.exports = {createStack, deleteStack};

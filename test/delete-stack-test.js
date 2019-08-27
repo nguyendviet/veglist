@@ -38,17 +38,17 @@ const deleteStack = async(name) => {
                 cloudformation.deleteStack(params, (err, data) => {
                     if (err) console.log(err, err.stack); // an error occurred
                     else {
-                        if (data.ResponseMetadata) resolve('All stacks deleted.');
+                        if (data.ResponseMetadata) resolve('200');
                     }
                 });
             });
         });
     }
-    else return 'All stacks deleted.';
+    else return '200';
 };
 
 describe('deleteStack', () => {
-    it('should eventually return confirmation: All stacks deleted', () => {
-        expect(deleteStack(`test-${appName}`)).eventually.to.equal('All stacks deleted.');
+    it('should eventually return confirmation: 200', () => {
+        expect(deleteStack(`test-${appName}`)).eventually.to.equal('200');
     });
 });

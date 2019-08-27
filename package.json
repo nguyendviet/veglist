@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test"
+      "delete-stack": "node ./scripts/delete-stack.js",
+      "test": "mocha test",
+      "upload-templates": "node ./scripts/upload-templates.js"
   },
   "repository": {
     "type": "git",

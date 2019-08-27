@@ -5,10 +5,10 @@ const path = require('path');
 module.exports = {
     appName: 'YOUR APP NAME',
     templateBucketName: 'YOUR TEMPLATE BUCKET NAME',
-    stackName: 'YOUR STACK NAME',
+    stackName: 'YOUR NESTED STACK NAME',
     templateFolder: path.join(__dirname, '..', 'cloudformation'),
     rootStack: 'root-stack.json',
-    pipelineStack: 'pipeline.json',
+    pipelineStack: 'pipeline.json', 
     pipelineParams: [
         {
             ParameterKey: 'BucketName',

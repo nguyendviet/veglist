@@ -3,7 +3,9 @@ const {templateBucketName, testBucketFolder, templateFolder} = require('../confi
 
 uploadTemplates('json', templateFolder, `${templateBucketName}/${testBucketFolder}`)
 .then((uploaded) => {
-    console.log(uploaded);
+    uploaded.forEach((upload) => {
+        console.log(upload.Location);
+    });
     console.log(`${uploaded.length} template(s) uploaded.`);
 })
 .catch((err) => console.log(err));
