@@ -39,6 +39,9 @@ const createStack = (...p) => {
 
 describe('createStack', () => {
     it('should return stack id', () => {
-        expect(createStack(testStackName, testTemplate, parameters, templateBucketName, testTemplateBucketFolder)).eventually.to.deep.include('StackId');
+        createStack(testStackName, testTemplate, parameters, templateBucketName, testTemplateBucketFolder)
+        .then((result) => {
+            expect(result).to.be.an('object').that.have.property('StackId');
+        });
     });
 });

@@ -1,5 +1,5 @@
 const chai = require('chai');
-const chaiAsPromised = require("chai-as-promised");
+const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
@@ -8,6 +8,12 @@ const {testType, testFolder, testBucket} = require('../config/test-config').uplo
 
 describe('Function uploadTemplates', () => {
     it(`should upload files to S3 bucket without errors`, () => {
-        expect(uploadTemplates(testType, testFolder, testBucket)).eventually.to.not.throw(Error);
+        uploadTemplates(testType, testFolder, testBucket)
+        .then((results) => {
+            expect(results).to.be.an('array');
+            results.forEach((result) => {
+                expect(result).to.be.an('object').that.have.property('Location');
+            })
+        });
     });
 });
