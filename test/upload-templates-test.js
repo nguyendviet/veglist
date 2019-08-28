@@ -57,8 +57,9 @@ const uploadTemplates = (...p) => {
     .catch((err) => console.log(err));
 };
 
-describe('Function uploadTemplates', () => {
+describe('uploadTemplates', () => {
     const {bucket, folder, type} = require('../config/test-config').uploadTemplates;
+    console.log(bucket);
     
     it(`should upload files to S3 bucket without errors`, () => {
         uploadTemplates(type, folder, bucket)

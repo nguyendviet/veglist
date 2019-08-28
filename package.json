@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+      "clean-bucket": "node ./scripts/clean-bucket.js",
       "delete-stack": "node ./scripts/delete-stack.js",
       "stage": "node ./cli",
       "test": "mocha test"

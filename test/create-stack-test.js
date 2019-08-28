@@ -37,10 +37,10 @@ const createStack = (...p) => {
 };
 
 describe('createStack', () => {
-    const {bucket, bucketFolder, name, parameters, template} = require('../config/test-config').createStack;
+    const {templateBucketName, testStackName, parameters, testTemplate, templateBucketFolder} = require('../config/test-config').createStack;
 
     it('should return stack id', () => {
-        createStack(name, template, parameters, bucket, bucketFolder)
+        createStack(testStackName, testTemplate, parameters, templateBucketName, templateBucketFolder)
         .then((result) => {
             expect(result).to.be.an('object').that.have.property('StackId');
         });

@@ -4,11 +4,11 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 const {uploadTemplates} = require('../helpers/templates');
-const {testType, testFolder, testBucket} = require('../config/test-config').uploadTemplates;
+const {type, folder, bucket} = require('../config/test-config').uploadTemplates;
 
-describe('Function uploadTemplates', () => {
+describe('uploadTemplates', () => {
     it(`should upload files to S3 bucket without errors`, () => {
-        uploadTemplates(testType, testFolder, testBucket)
+        uploadTemplates(type, folder, bucket)
         .then((results) => {
             expect(results).to.be.an('array');
             results.forEach((result) => {

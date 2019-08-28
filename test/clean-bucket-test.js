@@ -3,11 +3,11 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 // const should = chai.should;
+const path = require('path');
 
 process.env.AWS_SDK_LOAD_CONFIG=1;
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-const BUCKET = "veglist-test-7d54aa10-2cd8-4c39-a4-pipelinebucket-13pepu4z4um6y";
 
 /**
  * Function delete all objects inside a bucket,
@@ -67,7 +67,9 @@ const cleanThis = async(bucket) => {
 };
 
 describe('cleanThis', () => {
+    const {bucket} = require(path.join(__dirname, '..', 'config', 'test-config.js')).cleanBucket;
+
     it('should eventually return confirmation Deleted', () => {
-        expect(cleanThis(BUCKET)).eventually.to.have.property('Deleted');
+        expect(cleanThis(bucket)).eventually.to.have.property('Deleted');
     });
 });
