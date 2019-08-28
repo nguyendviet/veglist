@@ -1,7 +1,7 @@
 import React, { useState, forwardRef } from 'react';
 
 export default forwardRef(function Quantity({ date }, ref) {
-  const [quantity, setQuantity] = useState(30)
+  const [quantity, setQuantity] = useState(0)
 
   const subtract = () => {
     if (quantity > 0) {

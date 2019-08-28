@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import {Checkbox, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Quantity from './Quantity';
+import Store from './Store';
 
 const useInputState = () => {
     const [value, setValue] = useState('');
@@ -36,20 +37,20 @@ const TodoForm = ({ saveTodo }) => {
 
     return (
         <form
-        onSubmit={event => {
-            event.preventDefault();
+            onSubmit={event => {
+                event.preventDefault();
 
-            saveTodo(value);
-            reset();
-        }}
-        >
-        <TextField
-            variant="outlined"
-            placeholder="Add item"
-            margin="dense"
-            onChange={onChange}
-            value={value}
-        />
+                saveTodo(value);
+                reset();
+            }}
+            >
+            <TextField
+                variant="outlined"
+                placeholder="Add item"
+                margin="dense"
+                onChange={onChange}
+                value={value}
+            />
         </form>
     );
 };
@@ -86,15 +87,16 @@ const TodoHooksApp = () => {
 
         <TodoForm
             saveTodo={todoText => {
-            const trimmedText = todoText.trim();
+                const trimmedText = todoText.trim();
 
-            if (trimmedText.length > 0) {
-                addTodo(trimmedText);
-            }
+                if (trimmedText.length > 0) {
+                    addTodo(trimmedText);
+                }
             }}
         />
 
         <Quantity/>
+        <Store/>
 
         <TodoList todos={todos} deleteTodo={deleteTodo} />
         </div>
