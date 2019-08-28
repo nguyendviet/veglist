@@ -15,6 +15,7 @@ $ cd veglist
 $ yarn install
 $ cd client
 $ yarn install
+$ cd ..
 ```
 
 Create `./config/config.js` based on `./config/README.md`.
@@ -39,14 +40,19 @@ Provision infrastructure for the pipeline:
 $ npm run stage <STAGE NAME> create-pipeline-stack
 ```
 
-If you need to delete a stack:
-
-```bash
-$ npm run delete-stack <YOUR STACK NAME>
-```
-
 Once you've created the nested stack and the pipeline stack, every commit to this repository will trigger the pipeline to make a build to the designated S3 bucket for website hosting.
 
+If you need to delete a stack:
+
+1. Check if the stack created a bucket that contains objects. E.g.: the pipeline stack creates a bucket that contains the artifacts of the pipeline. Also it graps the build from GitHub to put files into the website bucket. So you need to empty those buckets first.
+1. Empty bucket:
+    ```bash
+    $ npm run clean-bucket <BUCKET NAME>
+    ```
+1. Then you can delete the stack:
+    ```bash
+    $ npm run delete-stack <YOUR STACK NAME>
+    ```
 
 ## Test
 

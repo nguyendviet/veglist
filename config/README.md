@@ -19,3 +19,5 @@ module.exports = {
     githubBranch: 'YOUR GITHUB BRANCH'
 };
 ```
+
+The `test-config.js` file contains test variables for functions only. Don't use it for dev or prod. Specify each function's variable in that file.

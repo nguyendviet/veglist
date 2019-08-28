@@ -3,6 +3,7 @@ const {appName, templateBucketName, templateFolder, rootTemplate} = require('./c
 
 module.exports = {
     cleanBucket: {
+        // Replace this bucket name with existing pipeline bucket.
         bucket: 'veglist-test-7d54aa10-2cd8-4c39-a4-pipelinebucket-13pepu4z4um6y'
     },
     createStack: {
