@@ -40,7 +40,7 @@ Once you've created the nested stack and the pipeline stack, every commit to thi
 
 If you need to delete a stack:
 
-1. Check if the stack created a bucket that contains objects. E.g.: the pipeline stack creates a bucket that contains the artifacts of the pipeline. Also it graps the build from GitHub to put files into the website bucket. So you need to empty those buckets first.
+1. Check if the stack created a bucket that contains objects. E.g.: The pipeline stack creates a bucket that contains the artifacts of the pipeline and also puts files into the website bucket. So you need to empty those buckets first.
 1. Empty bucket:
     ```bash
     $ yarn run clean-bucket <BUCKET NAME>
