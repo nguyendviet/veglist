@@ -4,6 +4,7 @@ import {Checkbox, IconButton, List, ListItem, ListItemSecondaryAction, ListItemT
 import DeleteIcon from '@material-ui/icons/Delete';
 import Quantity from './Quantity';
 import Store from './Store';
+import Unit from './Unit';
 
 const useInputState = () => {
     const [value, setValue] = useState('');
@@ -96,6 +97,7 @@ const TodoHooksApp = () => {
         />
 
         <Quantity/>
+        <Unit/>
         <Store/>
 
         <TodoList todos={todos} deleteTodo={deleteTodo} />

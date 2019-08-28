@@ -4,10 +4,10 @@ import '../css/Store.css';
   
 const languages = [
     {
-      name: 'Giant'
+      name: 'oz'
     },
     {
-      name: 'Whole Foods'
+      name: 'pcs'
     }
   ];
   
@@ -38,7 +38,7 @@ const languages = [
     );
   }
   
-export default class Store extends React.Component {
+export default class Unit extends React.Component {
     constructor() {
       super();
   
@@ -69,7 +69,7 @@ export default class Store extends React.Component {
     render() {
       const { value, suggestions } = this.state;
       const inputProps = {
-        placeholder: "Store",
+        placeholder: "Unit",
         value,
         onChange: this.onChange
       };
