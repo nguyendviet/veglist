@@ -7,7 +7,7 @@ module.exports = {
     templateBucketName: 'YOUR TEMPLATE BUCKET NAME',
     templateFolder: path.join(__dirname, '..', 'cloudformation'),
     templateType: 'json OR yml',
-    rootTemplate: 'root-stack.json OR .yml'
+    rootTemplate: 'root-stack.json OR .yml' // This creates the app stack.
 };
 
 // pipeline-config.js
