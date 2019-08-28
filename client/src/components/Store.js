@@ -1,98 +1,168 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import '../css/Store.css';
-
-const stores = [
-    {name: 'Giant'},
-    {name: 'Whole Foods'}
+  
+const languages = [
+    {
+      name: 'C',
+      year: 1972
+    },
+    {
+      name: 'C#',
+      year: 2000
+    },
+    {
+      name: 'C++',
+      year: 1983
+    },
+    {
+      name: 'Clojure',
+      year: 2007
+    },
+    {
+      name: 'Elm',
+      year: 2012
+    },
+    {
+      name: 'Go',
+      year: 2009
+    },
+    {
+      name: 'Haskell',
+      year: 1990
+    },
+    {
+      name: 'Java',
+      year: 1995
+    },
+    {
+      name: 'Javascript',
+      year: 1995
+    },
+    {
+      name: 'Perl',
+      year: 1987
+    },
+    {
+      name: 'PHP',
+      year: 1995
+    },
+    {
+      name: 'Python',
+      year: 1991
+    },
+    {
+      name: 'Ruby',
+      year: 1995
+    },
+    {
+      name: 'Scala',
+      year: 2003
+    }
 ];
   
-function escapeRegexCharacters(str) {
+  // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
+  function escapeRegexCharacters(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+  }
   
-function getSuggestions(value) {
+  function getSuggestions(value) {
     const escapedValue = escapeRegexCharacters(value.trim());
-
-    if (escapedValue === '') {
-        return [];
-    }
-
-    const regex = new RegExp('^' + escapedValue, 'i');
-
-    return stores.filter(language => regex.test(language.name));
-}
-
-function getSuggestionValue(suggestion) {
-    return suggestion.name;
-}
-
-function renderSuggestion(suggestion) {
-    return (
-        <span>{suggestion.name}</span>
-    );
-}
-  
-export default class Store extends React.Component {
-    constructor() {
-        super();
     
-        this.state = {
-            value: '',
-            suggestions: []
-        };    
+    if (escapedValue === '') {
+      return [];
     }
   
-    onChange = (event, { newValue, method }) => {
-        this.setState({
-            value: newValue
-        });
+    const regex = new RegExp('^' + escapedValue, 'i');
+  
+    return languages.filter(language => regex.test(language.name));
+  }
+  
+  function getSuggestionValue(suggestion) {
+    return suggestion.name;
+  }
+  
+  function renderSuggestion(suggestion) {
+    return (
+      <span>{suggestion.name}</span>
+    );
+  }
+  
+  class MyAutosuggest extends React.Component {
+    constructor() {
+      super();
+  
+      this.state = {
+        value: '',
+        suggestions: []
+      };    
+    }
+  
+    onChange = (_, { newValue }) => {
+      const { id, onChange } = this.props;
+      
+      this.setState({
+        value: newValue
+      });
+      
+      onChange(id, newValue);
     };
     
     onSuggestionsFetchRequested = ({ value }) => {
-        this.setState({
-            suggestions: getSuggestions(value)
-        });
+      this.setState({
+        suggestions: getSuggestions(value)
+      });
     };
   
     onSuggestionsClearRequested = () => {
-        this.setState({
-            suggestions: []
-        });
+      this.setState({
+        suggestions: []
+      });
     };
   
     render() {
-        const { value, suggestions } = this.state;
-        const storeInput = {
-            placeholder: "Type store name",
-            value,
-            onChange: this.onChange
-        };
-        const unitInput = {
-            placeholder: "Type unit name",
-            value,
-            onChange: this.onChange
-        }
-    
-        return (
-            <div>
-                <Autosuggest 
-                suggestions={suggestions}
-                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
-                inputProps={unitInput} />
-    
-                <Autosuggest 
-                suggestions={suggestions}
-                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
-                inputProps={storeInput} />
-            </div>
-        );
+      const { id, placeholder } = this.props;
+      const { value, suggestions } = this.state;
+      const inputProps = {
+        placeholder,
+        value,
+        onChange: this.onChange
+      };
+      
+      return (
+        <Autosuggest 
+          id={id}
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps} 
+        />
+      );
     }
-}
+  }
+  
+export default class Store extends React.Component {
+    onChange(id, newValue) {
+      console.log(`${id} changed to ${newValue}`);
+    }
+    
+    render() {
+      return (
+        <div>
+          <MyAutosuggest
+            id="unit"
+            placeholder="Unit"
+            onChange={this.onChange}
+          />
+          <MyAutosuggest
+            id="store"
+            placeholder="Store"
+            onChange={this.onChange}
+          />
+        </div>
+      );
+    }
+  }
   
