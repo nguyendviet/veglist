@@ -367,6 +367,19 @@
             "Value": {
                "Fn::Sub": "http://${BucketName}.s3-website-${AWS::Region}.amazonaws.com"
             }
+        },
+        "PipelineBucketName": {
+            "Description": "Name of bucket contains artifacts.",
+            "Value": {
+                "Fn::Select" : [ "5", { 
+                    "Fn::Split": [ ":", {
+                        "Fn::GetAtt": [
+                            "PipelineBucket",
+                            "Arn"
+                        ]
+                    }]
+                }]
+            }
         }
     }
 }
