@@ -3,8 +3,6 @@ const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
-const {testType, testFolder, testBucket, expectedOutput} = require('../config/test-config').uploadTemplates;
-
 const fs = require('fs');
 process.env.AWS_SDK_LOAD_CONFIG=1;
 const AWS = require('aws-sdk');
@@ -24,7 +22,7 @@ const filterFiles = (...params) => {
             return file;
         }
     });
-
+    
     return fileList;
 };
 
@@ -42,7 +40,7 @@ const uploadTemplates = (...p) => {
             Key: file,
             Body: fs.readFileSync(`${folder}/${file}`)
         };
-
+        
         return new Promise((resolve, reject) => {
             s3.upload(params).promise()
             .then((data) => {
@@ -51,7 +49,7 @@ const uploadTemplates = (...p) => {
             .catch((err) => console.log(err));
         });
     });
-
+    
     return Promise.all(promises)
     .then((allDone) => {
         return allDone;
@@ -59,20 +57,16 @@ const uploadTemplates = (...p) => {
     .catch((err) => console.log(err));
 };
 
-describe('Function filterFiles', () => {
-    it(`should return a list of filtered files by type ${testType} in folder ${testFolder}`, () => {
-        expect(filterFiles(testType, testFolder)).to.deep.equal(expectedOutput);
-    });
-});
-
 describe('Function uploadTemplates', () => {
+    const {bucket, folder, type} = require('../config/test-config').uploadTemplates;
+    
     it(`should upload files to S3 bucket without errors`, () => {
-        uploadTemplates(testType, testFolder, testBucket)
+        uploadTemplates(type, folder, bucket)
         .then((results) => {
             expect(results).to.be.an('array');
             results.forEach((result) => {
                 expect(result).to.be.an('object').that.have.property('Location');
-            })
+            });
         });
     });
 });

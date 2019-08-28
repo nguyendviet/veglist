@@ -37,6 +37,8 @@ const createStack = (...p) => {
  * @param {name} name Name or part of the name of a stack.
  */
 const deleteStack = async(name) => {
+    if (!name || name === '') console.log('Error: No stack name specified');
+    
     const findStacks = () => {
         return new Promise((resolve, reject) => {
             cloudformation.describeStacks({}).promise()

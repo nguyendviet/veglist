@@ -1,0 +1,7 @@
+module.exports = {
+    pipelineTemplate: 'pipeline.json',
+    bucketName: 'GET THIS FROM CLOUDFORMATION APP STACK OUTPUT',
+    githubUser: 'YOUR GITHUB USERNAME',
+    githubRepo: 'YOUR GITHUB REPO',
+    githubBranch: 'YOUR GITHUB BRANCH'
+};

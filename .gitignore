@@ -62,3 +62,4 @@ typings/
 
 # App files
 config.js
+pipeline-config.js

@@ -24,8 +24,19 @@ Upload templates to template bucket:
 ```bash
 $ pwd
 <YOUR PATH>/veglist
-$ npm run upload-templates
-$ npm run create-stack.js
+$ npm run stage <STAGE NAME> upload-templates
+```
+
+Provision infrastructure for the app:
+
+```bash
+$ npm run stage <STAGE NAME> create-app-stack
+```
+
+Provision infrastructure for the pipeline:
+
+```bash
+$ npm run stage <STAGE NAME> create-pipeline-stack
 ```
 
 If you need to delete a stack:
@@ -39,7 +50,8 @@ Once you've created the nested stack and the pipeline stack, every commit to thi
 
 ## Test
 
-- Modify `.config/test-config.js` for test variables:
+Modify `.config/test-config.js` for test variables:
+
 ```bash
 $ npm test
 ```

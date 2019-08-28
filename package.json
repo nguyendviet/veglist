@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
       "delete-stack": "node ./scripts/delete-stack.js",
-      "test": "mocha test",
-      "upload-templates": "node ./scripts/upload-templates.js"
+      "stage": "node ./cli",
+      "test": "mocha test"
   },
   "repository": {
     "type": "git",

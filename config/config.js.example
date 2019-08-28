@@ -1,0 +1,9 @@
+const path = require('path');
+
+module.exports = {
+    appName: 'veglist',
+    templateBucketName: 'ndi-tech-cloudformation-templates',
+    templateFolder: path.join(__dirname, '..', 'cloudformation'),
+    templateType: 'json',
+    rootTemplate: 'root-stack.json'
+};

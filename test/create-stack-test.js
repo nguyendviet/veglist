@@ -2,7 +2,6 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 const expect = chai.expect;
-const {templateBucketName, testStackName, parameters, testTemplate, testTemplateBucketFolder} = require('../config/test-config').createStack;
 
 process.env.AWS_SDK_LOAD_CONFIG=1;
 const AWS = require('aws-sdk');
@@ -17,13 +16,13 @@ const cloudformation = new AWS.CloudFormation({apiVersion: '2010-05-15'});
  */
 const createStack = (...p) => {
     if (!p || p.length === 0) console.log('Err: No parameters.');
-    const [stackName, template, parameters, bucketName, bucketFolder] = [...p];
+    const [stackName, template, parameters, bucket, bucketFolder] = [...p];
     const params = {
         StackName: stackName, /* required */
         Capabilities: ['CAPABILITY_IAM'],
         OnFailure: 'ROLLBACK',
         Parameters: parameters,
-        TemplateURL: `https://${bucketName}.s3.amazonaws.com/${bucketFolder}/${template}`,
+        TemplateURL: `https://${bucket}.s3.amazonaws.com/${bucketFolder}/${template}`,
         TimeoutInMinutes: 30
     };
     
@@ -38,8 +37,10 @@ const createStack = (...p) => {
 };
 
 describe('createStack', () => {
+    const {bucket, bucketFolder, name, parameters, template} = require('../config/test-config').createStack;
+
     it('should return stack id', () => {
-        createStack(testStackName, testTemplate, parameters, templateBucketName, testTemplateBucketFolder)
+        createStack(name, template, parameters, bucket, bucketFolder)
         .then((result) => {
             expect(result).to.be.an('object').that.have.property('StackId');
         });
