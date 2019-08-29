@@ -9,79 +9,79 @@ const languages = [
     {
       name: 'pcs'
     }
-  ];
+];
   
-  // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
-  function escapeRegexCharacters(str) {
+// https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
+function escapeRegexCharacters(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
+}
   
-  function getSuggestions(value) {
+function getSuggestions(value) {
     const escapedValue = escapeRegexCharacters(value.trim());
-    
+
     if (escapedValue === '') {
-      return [];
+        return [];
     }
-  
+
     const regex = new RegExp('^' + escapedValue, 'i');
-  
+
     return languages.filter(language => regex.test(language.name));
-  }
-  
-  function getSuggestionValue(suggestion) {
+}
+
+function getSuggestionValue(suggestion) {
     return suggestion.name;
-  }
-  
-  function renderSuggestion(suggestion) {
+}
+
+function renderSuggestion(suggestion) {
     return (
-      <span>{suggestion.name}</span>
+        <span>{suggestion.name}</span>
     );
-  }
+}
   
 export default class Unit extends React.Component {
     constructor() {
-      super();
-  
-      this.state = {
-        value: '',
-        suggestions: []
-      };    
+        super();
+    
+        this.state = {
+            value: '',
+            suggestions: []
+        };    
     }
   
     onChange = (event, { newValue, method }) => {
-      this.setState({
-        value: newValue
-      });
+        this.setState({
+            value: newValue
+        });
     };
     
     onSuggestionsFetchRequested = ({ value }) => {
-      this.setState({
-        suggestions: getSuggestions(value)
-      });
+        this.setState({
+            suggestions: getSuggestions(value)
+        });
     };
   
     onSuggestionsClearRequested = () => {
-      this.setState({
-        suggestions: []
-      });
+        this.setState({
+            suggestions: []
+        });
     };
   
     render() {
-      const { value, suggestions } = this.state;
-      const inputProps = {
-        placeholder: "Unit",
-        value,
-        onChange: this.onChange
-      };
-  
-      return (
-        <Autosuggest 
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
-          renderSuggestion={renderSuggestion}
-          inputProps={inputProps} />
-      );
+        const { value, suggestions } = this.state;
+        const inputProps = {
+            placeholder: "Unit",
+            value,
+            onChange: this.onChange
+        };
+    
+        return (
+            <Autosuggest 
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={getSuggestionValue}
+            renderSuggestion={renderSuggestion}
+            inputProps={inputProps} />
+        );
     }
-  }
+}

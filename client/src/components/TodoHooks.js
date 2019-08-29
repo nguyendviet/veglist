@@ -1,6 +1,10 @@
 import React, {useState} from 'react';
 import Typography from '@material-ui/core/Typography';
-import {Checkbox, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField} from '@material-ui/core';
+import {
+    Checkbox, Grid, IconButton,
+    List, ListItem, ListItemSecondaryAction, ListItemText, 
+    TextField
+} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Quantity from './Quantity';
 import Store from './Store';
@@ -44,7 +48,7 @@ const TodoForm = ({ saveTodo }) => {
                 saveTodo(value);
                 reset();
             }}
-            >
+        >
             <TextField
                 variant="outlined"
                 placeholder="Add item"
@@ -52,6 +56,22 @@ const TodoForm = ({ saveTodo }) => {
                 onChange={onChange}
                 value={value}
             />
+            {/* <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="center"
+                spacing={1}
+            >
+                <Grid item xs={6}>
+                    <Quantity/>
+                </Grid>
+                <Grid item xs={6}>
+                    <Unit/>
+                </Grid>
+            </Grid>
+            
+            <Store/> */}
         </form>
     );
 };
@@ -61,7 +81,10 @@ const TodoList = ({ todos, deleteTodo }) => (
         {todos.map((todo, index) => (
         <ListItem key={index.toString()} dense button>
             <Checkbox tabIndex={-1} disableRipple />
-            <ListItemText primary={todo} />
+            <ListItemText 
+                primary={todo}
+                secondary='2 box @ store'
+            />
             <ListItemSecondaryAction>
                 <IconButton
                     aria-label="Delete"
@@ -95,10 +118,6 @@ const TodoHooksApp = () => {
                 }
             }}
         />
-
-        <Quantity/>
-        <Unit/>
-        <Store/>
 
         <TodoList todos={todos} deleteTodo={deleteTodo} />
         </div>
