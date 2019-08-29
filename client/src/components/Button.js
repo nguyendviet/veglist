@@ -5,17 +5,19 @@ import {Add as AddIcon} from '@material-ui/icons';
 const useStyles = makeStyles(theme => ({
   fab: {
     position: 'fixed',
-    bottom: theme.spacing(5),
+    bottom: theme.spacing(2),
     right: theme.spacing(2),
   }
 }));
 
-export default function FloatingActionButtons() {
+export default function FloatingActionButtons({onClick}) {
   const classes = useStyles();
 
   return (
     <div>
-      <Fab color="primary" aria-label="add" className={classes.fab}>
+      <Fab color="primary" aria-label="add" className={classes.fab}
+        onClick={onClick}
+      >
         <AddIcon/>
       </Fab>
     </div>
