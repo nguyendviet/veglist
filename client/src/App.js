@@ -10,8 +10,8 @@ function App() {
     <div className="App">
       <TodoHooksApp/>
       <Form/>
-      {/* <Button/> */}
-      <Modal/>
+      <Button/>
+      {/* <Modal/> */}
     </div>
   );
 }

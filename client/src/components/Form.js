@@ -166,139 +166,86 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
+const units = [
+    'box',
+    'pieces',
+    'ounces'
 ];
 
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
-
+const stores = [
+    'Giant',
+    'Whole Foods'
+]
 
 export default function MultipleSelect() {
   const classes = useStyles();
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
 
   const [values, setValues] = React.useState({
     quantity: '',
     multiline: 'Controlled',
-    unit: 'box',
+    units: 'box',
+    stores: 'Giant'
   });
 
     const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-//   function handleChange(event) {
-//     setPersonName(event.target.value);
-//   }
+    return (
+        <div className={classes.root}>
+            <FormControl className={classes.formControl}>
+                <Input
+                placeholder="Item"
+                fullWidth
+                className={classes.input}
+                inputProps={{
+                'aria-label': 'description',
+                }}
+            />
+            </FormControl>
 
-  function handleChangeMultiple(event) {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setPersonName(value);
-  }
+            <FormControl>
+            <TextField
+                id="number"
+                placeholder="Quantity"
+                value={values.quantity}
+                onChange={handleChange('quantity')}
+                type="number"
+                className={classes.textField}
+                InputLabelProps={{
+                shrink: true,
+                }}
+                margin="normal"
+            />
+            </FormControl>
+            
+            <FormControl className={clsx(classes.formControl, classes.noLabel)}>
+                <Select
+                    displayEmpty
+                    value={values.units}
+                    onChange={handleChange('units')}
+                >
+                    {units.map(unit => (
+                        <MenuItem key={unit} value={unit}>
+                        {unit}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
 
-  return (
-    <div className={classes.root}>
-      <FormControl className={classes.formControl}>
-        <Input
-        placeholder="Item"
-        fullWidth
-        className={classes.input}
-        inputProps={{
-          'aria-label': 'description',
-        }}
-      />
-      </FormControl>
-      <FormControl>
-      <TextField
-        id="number"
-        placeholder="Quantity"
-        value={values.quantity}
-        onChange={handleChange('quantity')}
-        type="number"
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        margin="normal"
-      />
-      </FormControl>
-      
-      <FormControl className={clsx(classes.formControl, classes.noLabel)}>
-        <Select
-          multiple
-          displayEmpty
-          value={personName}
-          onChange={handleChange}
-          input={<Input id="select-multiple-placeholder" />}
-          renderValue={selected => {
-            if (selected.length === 0) {
-              return <em>Unit</em>;
-            }
-
-            return selected.join(', ');
-          }}
-          MenuProps={MenuProps}
-        >
-          <MenuItem disabled value="">
-            <em>Placeholder</em>
-          </MenuItem>
-          {names.map(name => (
-            <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl className={clsx(classes.formControl, classes.noLabel)}>
-        <Select
-          multiple
-          displayEmpty
-          value={personName}
-          onChange={handleChange}
-          input={<Input id="select-multiple-placeholder" />}
-          renderValue={selected => {
-            if (selected.length === 0) {
-              return <em>Store</em>;
-            }
-
-            return selected.join(', ');
-          }}
-          MenuProps={MenuProps}
-        >
-          <MenuItem disabled value="">
-            <em>Placeholder</em>
-          </MenuItem>
-          {names.map(name => (
-            <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
-  );
+            <FormControl className={clsx(classes.formControl, classes.noLabel)}>
+                <Select
+                    displayEmpty
+                    value={values.stores}
+                    onChange={handleChange('stores')}
+                >
+                    {stores.map(store => (
+                        <MenuItem key={store} value={store}>
+                        {store}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        </div>
+    );
 }

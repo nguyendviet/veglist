@@ -4,6 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Button from './Button';
+import Inputs from './Inputs';
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -48,8 +49,7 @@ export default function TransitionsModal() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">react-transiton-group animates me.</p>
+            <Inputs/>
           </div>
         </Fade>
       </Modal>
