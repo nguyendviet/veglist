@@ -132,6 +132,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
+import { NativeSelect } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -205,30 +206,34 @@ export default function MultipleSelect() {
             </FormControl>
 
             <FormControl>
-            <TextField
-                id="number"
-                placeholder="Quantity"
-                value={values.quantity}
-                onChange={handleChange('quantity')}
-                type="number"
-                className={classes.textField}
-                InputLabelProps={{
-                shrink: true,
-                }}
-                margin="normal"
-            />
+                <TextField
+                    id="number"
+                    placeholder="Quantity"
+                    value={values.quantity}
+                    onChange={handleChange('quantity')}
+                    type="number"
+                    className={classes.textField}
+                    InputLabelProps={{
+                    shrink: true,
+                    }}
+                    margin="normal"
+                />
             </FormControl>
             
             <FormControl className={clsx(classes.formControl, classes.noLabel)}>
+                <InputLabel htmlFor="unit-native-simple">Unit</InputLabel>
                 <Select
-                    displayEmpty
                     value={values.units}
+                    inputProps={{
+                        name: 'units',
+                        id: 'unit-native-simple',
+                    }}
                     onChange={handleChange('units')}
+                    autoWidth
                 >
-                    {units.map(unit => (
-                        <MenuItem key={unit} value={unit}>
-                        {unit}
-                        </MenuItem>
+                    {/* TODO: Add default value from the array */}
+                    {units.map((unit) => (
+                        <MenuItem key={unit} value={unit}>{unit}</MenuItem>
                     ))}
                 </Select>
             </FormControl>
