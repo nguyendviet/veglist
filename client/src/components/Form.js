@@ -133,6 +133,7 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
 import { NativeSelect } from '@material-ui/core';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -184,13 +185,15 @@ export default function MultipleSelect() {
   const [values, setValues] = React.useState({
     quantity: '',
     multiline: 'Controlled',
-    units: 'box',
-    stores: 'Giant'
+    units: '',
+    stores: ''
   });
 
     const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
-  };
+        console.log({...values});
+        console.log(event.target.value);
+        setValues({ ...values, [name]: event.target.value });
+    };
 
     return (
         <div className={classes.root}>
@@ -221,17 +224,20 @@ export default function MultipleSelect() {
             </FormControl>
             
             <FormControl className={clsx(classes.formControl, classes.noLabel)}>
-                <InputLabel htmlFor="unit-native-simple">Unit</InputLabel>
                 <Select
                     value={values.units}
-                    inputProps={{
-                        name: 'units',
-                        id: 'unit-native-simple',
-                    }}
+                    name="units"
                     onChange={handleChange('units')}
                     autoWidth
+                    renderValue={selected => {
+                        if (selected === '') return <em>Unit</em>;
+                        else return selected;
+                    }}
                 >
                     {/* TODO: Add default value from the array */}
+                    <MenuItem value="" disabled>
+                        Placeholder
+                    </MenuItem>
                     {units.map((unit) => (
                         <MenuItem key={unit} value={unit}>{unit}</MenuItem>
                     ))}
