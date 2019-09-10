@@ -62,6 +62,7 @@ export default function MultipleSelect() {
     const classes = useStyles();
 
     const [values, setValues] = React.useState({
+        item: '',
         quantity: '',
         units: '',
         stores: ''
@@ -82,6 +83,8 @@ export default function MultipleSelect() {
             <FormControl className={classes.formControl}>
                 <Input
                     placeholder="Item"
+                    value={values.item}
+                    onChange={handleChange('item')}
                     fullWidth
                     className={classes.input}
                     inputProps={{
@@ -99,7 +102,7 @@ export default function MultipleSelect() {
                     type="number"
                     className={classes.textField}
                     InputLabelProps={{
-                    shrink: true,
+                        shrink: true,
                     }}
                     margin="normal"
                     fullWidth
@@ -107,6 +110,9 @@ export default function MultipleSelect() {
             </FormControl>
             
             <FormControl className={clsx(classes.formControl, classes.noLabel)}>
+                <InputLabel shrink htmlFor="age-native-label-placeholder">
+                    Unit
+                </InputLabel>
                 <Select
                     value={values.units}
                     onChange={handleChange('units')}
@@ -124,6 +130,9 @@ export default function MultipleSelect() {
             </FormControl>
 
             <FormControl className={clsx(classes.formControl, classes.noLabel)}>
+                <InputLabel shrink htmlFor="age-native-label-placeholder">
+                    Store
+                </InputLabel>
                 <Select
                     value={values.stores}
                     onChange={handleChange('stores')}
@@ -139,10 +148,15 @@ export default function MultipleSelect() {
                     ))}
                 </Select>
             </FormControl>
-            <Button type="submit" variant="contained" color="primary" className={classes.button}
+            <Button 
+                type="submit" 
+                variant="contained" 
+                color="primary" 
+                className={classes.button}
+                disabled={values.item ? false : true}
                 onClick={handleSubmit}
             >
-                Add
+                Submit
             </Button>
         </div>
     );
