@@ -12,6 +12,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
 import { NativeSelect } from '@material-ui/core';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,14 +63,19 @@ export default function MultipleSelect() {
 
     const [values, setValues] = React.useState({
         quantity: '',
-        units: 'Unit',
-        stores: 'Store'
+        units: '',
+        stores: ''
     });
 
     const handleChange = name => event => {
         const val = event.target.value
         setValues({ ...values, [name]: val });
     };
+
+    const handleSubmit = () => {
+        console.log('submit');
+        console.log(values);
+    }
 
     return (
         <div className={classes.root}>
@@ -133,6 +139,11 @@ export default function MultipleSelect() {
                     ))}
                 </Select>
             </FormControl>
+            <Button type="submit" variant="contained" color="primary" className={classes.button}
+                onClick={handleSubmit}
+            >
+                Add
+            </Button>
         </div>
     );
 }
