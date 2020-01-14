@@ -39,7 +39,7 @@ export default function CheckboxList() {
         const updatedGroceries = groceries.map((item) => {
             if (item.id === id) {
                 if (item.purchased === false) item.purchased = true;
-                // if (item.purchased === true) item.purchased = false;
+                else item.purchased = false;
             }
             return item;
         });
