@@ -24,12 +24,17 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function CheckboxList() {
     let initialGroceries = [
         {
-            id: "one",
+            id: "apple",
             text: "Apple",
             purchased: false
         },
         {
-            id: "two",
+            id: "organe",
+            text: "Orange",
+            purchased: false
+        },
+        {
+            id: "banana",
             text: "Banana",
             purchased: false
         }
@@ -53,6 +58,19 @@ export default function CheckboxList() {
             }
             return item;
         });
+        
+        // Move purchased items to the bottom of the list
+        updatedGroceries.sort((a, b) => {
+            if(a.purchased && !b.purchased) return 1;
+            if (!a.purchased && b.purchased) return -1;
+            // Include if condition below to sort by text:
+            // if (!a.purchased && !b.purchased) {
+            //     if (a.text > b.text) return 1;
+            //     if (a.text < b.text) return -1;
+            // }
+            return 0;
+        });
+
         setGroceries(updatedGroceries);   
     }
 
