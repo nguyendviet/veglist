@@ -9,6 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
 import { CircularProgress } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,6 +35,15 @@ export default function CheckboxList() {
         }
     ];
     const [groceries, setGroceries] = useState(initialGroceries);
+
+    const handleDeleteItem = (id: string) => () => {
+        console.log(`id to delete = ${id}`);
+        const groceriesAfterDelete = groceries.filter((item) => {
+            return item.id !== id;
+        });
+        // console.log(groceriesAfterDelete);
+        setGroceries(groceriesAfterDelete);
+    }
 
     const handlePurchase = (id: string) => () => {
         const updatedGroceries = groceries.map((item) => {
@@ -61,9 +71,11 @@ export default function CheckboxList() {
               </ListItemIcon>
               <ListItemText id={labelId} primary={item.text} />
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="comments">
-                  <CommentIcon />
-                </IconButton>
+                    <IconButton edge="end" aria-label="delete"
+                        onClick={handleDeleteItem(item.id)}
+                    >
+                    <DeleteIcon />
+                    </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
           );
