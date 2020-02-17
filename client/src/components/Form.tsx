@@ -21,12 +21,12 @@ const useStyles = makeStyles(theme => ({
  * Custom hooks for input fields.
  * @param initialState initialState for Input Fields
  */
-function useFormFields(initialState: any) {
+function useFormFields<T>(initialState: T): [T, (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void] {
     const [inputs, setValues] = useState(initialState);
   
     return [
         inputs,
-        function(event: any) {
+        function(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
             setValues({
                 ...inputs,
                 [event.target.id]: event.target.value
