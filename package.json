@@ -3,12 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-      "clean-bucket": "node ./scripts/clean-bucket.js",
-      "delete-stack": "node ./scripts/delete-stack.js",
-      "stage": "node ./cli",
-      "test": "mocha test"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nguyendviet/veglist.git"
@@ -23,8 +18,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "mocha": "^6.2.0",
-    "uuid": "^3.3.3"
+    "mocha": "^6.2.0"
   },
   "dependencies": {
     "aws-sdk": "^2.514.0"
