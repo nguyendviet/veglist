@@ -24,3 +24,4 @@ yarn-error.log*
 
 # app files:
 config.tsx
+/src/auth/
