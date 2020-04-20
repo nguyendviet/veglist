@@ -14,56 +14,28 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-/**
- * Custom hooks for input fields.
- * @param initialState initialState for Input Fields
- */
-function useFormFields<T>(initialState: T): [T, (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void] {
-    const [inputs, setValues] = useState(initialState);
-  
-    return [
-        inputs,
-        function(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
-            setValues({
-                ...inputs,
-                [event.target.id]: event.target.value
-            });
-        }
-    ];
-}
-
-export default function FormPropsTextFields() {
+export default function FormPropsTextFields(props: any) {
     const classes = useStyles();
-    const [inputs, handleInputChange] = useFormFields({
-        item: '',
-        quantity: '',
-        store: ''
-    });
-
-    const handleSubmitItem = (event: React.FormEvent) => {
-        event.preventDefault();
-        console.log(inputs);
-    };
 
     return (
         <form 
             className={classes.root} 
             noValidate autoComplete="off"
-            onSubmit={handleSubmitItem}
+            onSubmit={props.handleSubmitItem}
         >
             <div>
                 <TextField 
                     required id="item" 
                     label="Item" 
-                    value={inputs.item}
-                    onChange={handleInputChange}
+                    value={props.inputs.name}
+                    onChange={props.handleInputChange}
                 />
                 <TextField
                     id="quantity"
                     label="Quantity"
                     type="number"
-                    value={inputs.quantity}
-                    onChange={handleInputChange}
+                    value={props.inputs.quantity}
+                    onChange={props.handleInputChange}
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -72,8 +44,8 @@ export default function FormPropsTextFields() {
                     id="store" 
                     label="Store" 
                     type="search"
-                    value={inputs.store}
-                    onChange={handleInputChange}
+                    value={props.inputs.store}
+                    onChange={props.handleInputChange}
                 />
                 <IconButton 
                     type="submit"

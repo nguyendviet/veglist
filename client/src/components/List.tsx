@@ -9,20 +9,20 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 export default function CheckboxList(props: any) {
-    const initialGroceries = props.items;
-    const [groceries, setGroceries] = useState(initialGroceries);
+    // const initialGroceries = props.items;
+    // const [props.groceries, props.setGroceries] = useState(initialGroceries);
 
     const handleDeleteItem = (id: string) => () => {
         console.log(`id to delete = ${id}`);
-        const groceriesAfterDelete = groceries.filter((item: any) => {
+        const groceriesAfterDelete = props.groceries.filter((item: any) => {
             return item.id !== id;
         });
         // console.log(groceriesAfterDelete);
-        setGroceries(groceriesAfterDelete);
+        props.setGroceries(groceriesAfterDelete);
     }
 
     const handlePurchase = (id: string) => () => {
-        const updatedGroceries = groceries.map((item: any) => {
+        const updatedGroceries = props.groceries.map((item: any) => {
             if (item.id === id) {
                 if (item.purchased === false) item.purchased = true;
                 else item.purchased = false;
@@ -42,12 +42,12 @@ export default function CheckboxList(props: any) {
             return 0;
         });
 
-        setGroceries(updatedGroceries);   
+        props.setGroceries(updatedGroceries);   
     }
 
     return (
       <List>
-        {groceries.map((item: any) => {
+        {props.groceries.map((item: any) => {
           const labelId = `checkbox-list-label-${item.id}`;
   
           return (
@@ -58,7 +58,7 @@ export default function CheckboxList(props: any) {
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={item.text} />
+              <ListItemText id={labelId} primary={item.name} />
               <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="delete"
                         onClick={handleDeleteItem(item.id)}
