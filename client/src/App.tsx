@@ -13,6 +13,8 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
+import { v4 as uuidv4 } from 'uuid';
+
 const useStyles = makeStyles(theme => ({
     root: {
       '& .MuiTextField-root': {
@@ -41,36 +43,149 @@ function useFormFields<T>(initialState: T): [T, (event: React.ChangeEvent<HTMLTe
 }
 
 function App() {
-    const [items, setItems] = useState([{name: ''}]);
+    const classes = useStyles();
+
+    let initialGroceries = [
+        {
+            id: 'apple',
+            name: "Apple",
+            quantity: 10,
+            purchased: false,
+            store: ''
+        },
+        {
+            id: 'orange',
+            name: "Orange",
+            quantity: 10,
+            purchased: false,
+            store: ''
+        },
+        {
+            id: 'banana',
+            name: "Banana",
+            quantity: 10,
+            purchased: false,
+            store: ''
+        }
+    ];
+
     const [inputs, handleInputChange] = useFormFields({
-        name: ''
+        id: 'someID',
+        name: '',
+        quantity: 0,
+        purchased: false,
+        store: '',
     });
+
+    const [groceries, setGroceries] = useState(initialGroceries);
 
     function handleSubmitItem(event: React.FormEvent) {
         event.preventDefault();
-        setItems([...items, inputs]);
+        setGroceries([...groceries, inputs]);
     }
 
+    const handleDeleteItem = (id: string) => () => {
+        console.log(`id to delete = ${id}`);
+        const groceriesAfterDelete = groceries.filter((item: any) => {
+            return item.id !== id;
+        });
+        setGroceries(groceriesAfterDelete);
+    }
+
+    const handlePurchase = (name: string) => () => {
+        const updatedGroceries = groceries.map((item: any) => {
+            if (item.name === name) {
+                if (item.purchased === false) item.purchased = true;
+                else item.purchased = false;
+            }
+            return item;
+        });
+        
+        // Move purchased items to the bottom of the list
+        updatedGroceries.sort((a: any, b: any) => {
+            if(a.purchased && !b.purchased) return 1;
+            if (!a.purchased && b.purchased) return -1;
+            // Include if condition below to sort by text:
+            // if (!a.purchased && !b.purchased) {
+            //     if (a.text > b.text) return 1;
+            //     if (a.text < b.text) return -1;
+            // }
+            return 0;
+        });
+
+        setGroceries(updatedGroceries);   
+    }
+
+    const renderList = useMemo(() => {
+        return (
+            <List>
+                {groceries.map((item: any, index) => {
+                const labelId = `checkbox-list-label-${item.id}`;
+        
+                return (
+                    <ListItem key={index} role={undefined} dense button onClick={handlePurchase(item.name)}>
+                    <ListItemIcon>
+                        <Checkbox
+                        checked={item.purchased}
+                        inputProps={{ 'aria-labelledby': labelId }}
+                        />
+                    </ListItemIcon>
+                    <ListItemText id={labelId} primary={item.name} />
+                    <ListItemSecondaryAction>
+                            <IconButton edge="end" aria-label="delete"
+                                onClick={handleDeleteItem(item.id)}
+                            >
+                            <DeleteIcon />
+                            </IconButton>
+                    </ListItemSecondaryAction>
+                    </ListItem>
+                );
+                })}
+            </List>
+        );
+    }, [groceries, setGroceries]);
+
     return (
-        <div>
+        <div className="App">
+            {renderList}
             <form 
+                className={classes.root} 
                 noValidate autoComplete="off"
                 onSubmit={handleSubmitItem}
             >
-                <TextField 
-                    required id="name" 
-                    label="Item" 
-                    value={inputs.name}
-                    onChange={handleInputChange}
-                />
+                <div>
+                    <TextField 
+                        required id="name" 
+                        label="Item" 
+                        value={inputs.name}
+                        onChange={handleInputChange}
+                    />
+                    <TextField
+                        id="quantity"
+                        label="Quantity"
+                        type="number"
+                        value={inputs.quantity}
+                        onChange={handleInputChange}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <TextField 
+                        id="store" 
+                        label="Store" 
+                        type="search"
+                        value={inputs.store}
+                        onChange={handleInputChange}
+                    />
+                    <IconButton 
+                        type="submit"
+                        color="primary" 
+                        aria-label="add to shopping cart"
+                    >
+                        <AddShoppingCartIcon />
+                    </IconButton>
+                </div>
             </form>
-            {/* <button onClick={() => setItems([...items, {name: "Banana"}])}>+</button> */}
-            <ul>
-            {items.map((item) => (
-                <li>{item.name}</li>
-            ))}
-            </ul>
-            
         </div>
     );
 }
