@@ -10,41 +10,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
-// import { v4 as uuidv4 } from 'uuid';
-
-const useStyles = makeStyles(theme => ({
-    root: {
-      '& .MuiTextField-root': {
-        margin: theme.spacing(1),
-        width: 200,
-      },
-    },
-}));
-
-/**
- * Custom hooks for input fields.
- * @param initialState initialState for Input Fields
- */
-function useFormFields<T>(initialState: T): [T, (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void] {
-    const [inputs, setValues] = useState(initialState);
-  
-    return [
-        inputs,
-        function(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
-            setValues({
-                ...inputs,
-                [event.target.id]: event.target.value
-            });
-        }
-    ];
-}
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
-    const classes = useStyles();
-
     let initialGroceries = [
         {
             id: 'apple',
@@ -69,51 +39,39 @@ function App() {
         }
     ];
 
-    const [inputs, handleInputChange] = useFormFields({
-        id: 'someid',
+    const [inputs, setInputs] = useState({
+        id: '', // id: uuidv4(); doesn't work. all new items have the same id
         name: '',
         quantity: 0,
         purchased: false,
-        store: '',
+        store: ''
     });
 
     const [groceries, setGroceries] = useState(initialGroceries);
+
+    function handleInputChange(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+        event.preventDefault();
+        // console.log(event.target.id);
+        // console.log(event.target.value);
+        // inputs.id = uuidv4(); this doesn't work
+        setInputs({...inputs, [event.target.id]: event.target.value});
+    }
 
     function handleSubmitItem(event: React.FormEvent) {
         event.preventDefault();
         setGroceries([...groceries, inputs]);
     }
 
+    // Because new items have the same id, when delete one of the new items
+    // all of them will be deleted
+    // This should be able to delete a unique item even it has the same name
+    // and other attributes with others.
     const handleDeleteItem = (id: string) => () => {
         console.log(`id to delete = ${id}`);
         const groceriesAfterDelete = groceries.filter((item: any) => {
             return item.id !== id;
         });
         setGroceries(groceriesAfterDelete);
-    }
-
-    const handlePurchase = (name: string) => () => {
-        const updatedGroceries = groceries.map((item: any) => {
-            if (item.name === name) {
-                if (item.purchased === false) item.purchased = true;
-                else item.purchased = false;
-            }
-            return item;
-        });
-        
-        // Move purchased items to the bottom of the list
-        updatedGroceries.sort((a: any, b: any) => {
-            if(a.purchased && !b.purchased) return 1;
-            if (!a.purchased && b.purchased) return -1;
-            // Include if condition below to sort by text:
-            // if (!a.purchased && !b.purchased) {
-            //     if (a.text > b.text) return 1;
-            //     if (a.text < b.text) return -1;
-            // }
-            return 0;
-        });
-
-        setGroceries(updatedGroceries);   
     }
 
     const renderList = useMemo(() => {
@@ -123,7 +81,7 @@ function App() {
                 const labelId = `checkbox-list-label-${item.id}`;
         
                 return (
-                    <ListItem key={index} role={undefined} dense button onClick={handlePurchase(item.name)}>
+                    <ListItem key={index} role={undefined} dense button>
                     <ListItemIcon>
                         <Checkbox
                         checked={item.purchased}
@@ -149,8 +107,6 @@ function App() {
         <div className="App">
             {renderList}
             <form 
-                className={classes.root} 
-                noValidate autoComplete="off"
                 onSubmit={handleSubmitItem}
             >
                 <div>
