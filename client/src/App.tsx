@@ -51,14 +51,17 @@ function App() {
         }
     ];
 
+    // TODO: Find a way to generate a unique ID for each new item.
+
     const [groceries, setGroceries] = useState(initialGroceries);
-    const [inputs, setInputs] = useState({
-        id: 'someid',
+    const initialInputs = {
+        id: '',
         name: '',
         quantity: 0,
         purchased: false,
         store: ''
-    });
+    }
+    const [inputs, setInputs] = useState(initialInputs);
 
     function handleInputChange(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
         event.preventDefault();
@@ -67,7 +70,13 @@ function App() {
 
     function handleSubmitItem(event: React.FormEvent) {
         event.preventDefault();
-        setGroceries([...groceries, inputs]);
+        if (inputs.name !== '') {
+            // Generate a unique id. This only works if input changes:
+            inputs.id = uuidv4(); 
+            // ISSUE: when a new id generated, all items' ids are changed too!
+            setGroceries([...groceries, inputs]);
+            setInputs(initialInputs);
+        }
     }
 
     const handleDeleteItem = (id: string) => () => {
@@ -117,6 +126,7 @@ function App() {
                         />
                     </ListItemIcon>
                     <ListItemText id={labelId} primary={item.name} />
+                    id: {item.id}
                     <ListItemSecondaryAction>
                             <IconButton edge="end" aria-label="delete"
                                 onClick={handleDeleteItem(item.id)}
