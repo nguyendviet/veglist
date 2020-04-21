@@ -13,7 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -23,24 +23,6 @@ const useStyles = makeStyles(theme => ({
       },
     },
 }));
-
-/**
- * Custom hooks for input fields.
- * @param initialState initialState for Input Fields
- */
-function useFormFields<T>(initialState: T): [T, (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void] {
-    const [inputs, setValues] = useState(initialState);
-  
-    return [
-        inputs,
-        function(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
-            setValues({
-                ...inputs,
-                [event.target.id]: event.target.value
-            });
-        }
-    ];
-}
 
 function App() {
     const classes = useStyles();
@@ -69,15 +51,19 @@ function App() {
         }
     ];
 
-    const [inputs, handleInputChange] = useFormFields({
-        id: 'someid',
+    const [groceries, setGroceries] = useState(initialGroceries);
+    const [inputs, setInputs] = useState({
+        id: '',
         name: '',
         quantity: 0,
         purchased: false,
-        store: '',
+        store: ''
     });
 
-    const [groceries, setGroceries] = useState(initialGroceries);
+    function handleInputChange(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+        event.preventDefault();
+        setInputs({...inputs, [event.target.id]: event.target.value});
+    }
 
     function handleSubmitItem(event: React.FormEvent) {
         event.preventDefault();
@@ -92,9 +78,9 @@ function App() {
         setGroceries(groceriesAfterDelete);
     }
 
-    const handlePurchase = (name: string) => () => {
+    const handlePurchase = (id: string) => () => {
         const updatedGroceries = groceries.map((item: any) => {
-            if (item.name === name) {
+            if (item.id === id) {
                 if (item.purchased === false) item.purchased = true;
                 else item.purchased = false;
             }
@@ -123,7 +109,7 @@ function App() {
                 const labelId = `checkbox-list-label-${item.id}`;
         
                 return (
-                    <ListItem key={index} role={undefined} dense button onClick={handlePurchase(item.name)}>
+                    <ListItem key={index} role={undefined} dense button onClick={handlePurchase(item.id)}>
                     <ListItemIcon>
                         <Checkbox
                         checked={item.purchased}
