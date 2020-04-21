@@ -24,58 +24,45 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+interface Item {
+    id: string;
+    name: string;
+    quantity: number;
+    purchased: boolean;
+    store: string;
+}
+
 function App() {
     const classes = useStyles();
-
-    let initialGroceries = [
-        {
-            id: 'apple',
-            name: "Apple",
-            quantity: 10,
-            purchased: false,
-            store: ''
-        },
-        {
-            id: 'orange',
-            name: "Orange",
-            quantity: 10,
-            purchased: false,
-            store: ''
-        },
-        {
-            id: 'banana',
-            name: "Banana",
-            quantity: 10,
-            purchased: false,
-            store: ''
-        }
-    ];
-
-    // TODO: Find a way to generate a unique ID for each new item.
-
-    const [groceries, setGroceries] = useState(initialGroceries);
-    const initialInputs = {
+    const defaultItem: Item = {
+        id: 'apple',
+        name: 'Apple',
+        quantity: 1,
+        purchased: false,
+        store: 'Giant'
+    };
+    const [groceries, setGroceries] = useState([defaultItem]);
+    const defaultNewItem = {
         id: '',
         name: '',
         quantity: 0,
         purchased: false,
         store: ''
     }
-    const [inputs, setInputs] = useState(initialInputs);
+    const [newItem, setNewItem] = useState(defaultNewItem);
 
     function handleInputChange(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
         event.preventDefault();
-        setInputs({...inputs, [event.target.id]: event.target.value});
+        setNewItem({...newItem, [event.target.id]: event.target.value});
     }
 
     function handleSubmitItem(event: React.FormEvent) {
         event.preventDefault();
-        if (inputs.name !== '') {
-            // Generate a unique id. This only works if input changes:
-            inputs.id = uuidv4(); 
-            // ISSUE: when a new id generated, all items' ids are changed too!
-            setGroceries([...groceries, inputs]);
-            setInputs(initialInputs);
+        if (newItem.name !== '') {
+            // Generate a unique id
+            newItem.id = uuidv4(); 
+            setGroceries([...groceries, newItem]);
+            setNewItem(defaultNewItem);
         }
     }
 
@@ -111,6 +98,13 @@ function App() {
         setGroceries(updatedGroceries);   
     }
 
+    const buildTextOf = (item: any) => {
+        let text = `${item.name}`;
+        if (item.quantity !== 0) text += ` x ${item.quantity}`;
+        if (item.store !== '') text += ` @ ${item.store}`;
+        return text;
+    }
+
     const renderList = useMemo(() => {
         return (
             <List>
@@ -119,21 +113,23 @@ function App() {
         
                 return (
                     <ListItem key={index} role={undefined} dense button onClick={handlePurchase(item.id)}>
-                    <ListItemIcon>
-                        <Checkbox
-                        checked={item.purchased}
-                        inputProps={{ 'aria-labelledby': labelId }}
+                        <ListItemIcon>
+                            <Checkbox
+                                checked={item.purchased}
+                                inputProps={{ 'aria-labelledby': labelId }}
+                            />
+                        </ListItemIcon>
+                        <ListItemText 
+                            id={labelId} 
+                            primary={buildTextOf(item)}
                         />
-                    </ListItemIcon>
-                    <ListItemText id={labelId} primary={item.name} />
-                    id: {item.id}
-                    <ListItemSecondaryAction>
+                        <ListItemSecondaryAction>
                             <IconButton edge="end" aria-label="delete"
                                 onClick={handleDeleteItem(item.id)}
                             >
-                            <DeleteIcon />
+                                <DeleteIcon />
                             </IconButton>
-                    </ListItemSecondaryAction>
+                        </ListItemSecondaryAction>
                     </ListItem>
                 );
                 })}
@@ -151,16 +147,17 @@ function App() {
             >
                 <div>
                     <TextField 
-                        required id="name" 
+                        required 
+                        id="name" 
                         label="Item" 
-                        value={inputs.name}
+                        value={newItem.name}
                         onChange={handleInputChange}
                     />
                     <TextField
                         id="quantity"
                         label="Quantity"
                         type="number"
-                        value={inputs.quantity}
+                        value={newItem.quantity}
                         onChange={handleInputChange}
                         InputLabelProps={{
                             shrink: true,
@@ -170,7 +167,7 @@ function App() {
                         id="store" 
                         label="Store" 
                         type="search"
-                        value={inputs.store}
+                        value={newItem.store}
                         onChange={handleInputChange}
                     />
                     <IconButton 
