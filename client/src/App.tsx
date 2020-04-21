@@ -53,7 +53,7 @@ function App() {
 
     const [groceries, setGroceries] = useState(initialGroceries);
     const [inputs, setInputs] = useState({
-        id: '',
+        id: 'someid',
         name: '',
         quantity: 0,
         purchased: false,
