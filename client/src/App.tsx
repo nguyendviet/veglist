@@ -53,6 +53,10 @@ function App() {
 
     function handleInputChange(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
         event.preventDefault();
+        // Prevent negative quantity:
+        if (event.target.id === 'quantity') {
+            event.target.value = parseInt(event.target.value) <= 0 ? '0' : event.target.value;
+        }
         setNewItem({...newItem, [event.target.id]: event.target.value});
     }
 
