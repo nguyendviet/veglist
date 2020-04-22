@@ -1,4 +1,4 @@
-import React , {useState, useMemo, useEffect} from 'react';
+import React , {useState, useMemo} from 'react';
 import './App.css';
 
 import List from '@material-ui/core/List';
@@ -39,7 +39,7 @@ function App() {
         name: 'Apple',
         quantity: 1,
         purchased: false,
-        store: 'Giant'
+        store: 'Your Favourite Store'
     };
     const [groceries, setGroceries] = useState([defaultItem]);
     const defaultNewItem = {
@@ -91,11 +91,6 @@ function App() {
         updatedGroceries.sort((a: any, b: any) => {
             if(a.purchased && !b.purchased) return 1;
             if (!a.purchased && b.purchased) return -1;
-            // Include if condition below to sort by text:
-            // if (!a.purchased && !b.purchased) {
-            //     if (a.text > b.text) return 1;
-            //     if (a.text < b.text) return -1;
-            // }
             return 0;
         });
 
@@ -143,6 +138,7 @@ function App() {
 
     return (
         <div className="App">
+            {/* TODO: Add Google LogIn Button */}
             {renderList}
             <form 
                 className={classes.root} 
