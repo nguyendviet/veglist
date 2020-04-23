@@ -3,7 +3,7 @@ import React from 'react';
 export default function GoogleSignInButton() {
     return (
         <React.Fragment>
-            <button>Supposed to be Google Sign-In button</button>
+            <div className="g-signin2" data-onsuccess="onSignIn"></div>
         </React.Fragment>
     )
 }

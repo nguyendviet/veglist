@@ -13,6 +13,8 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
+import GoogleSignInButton from './components/GoogleSignInButton';
+
 import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles(theme => ({
@@ -139,6 +141,7 @@ function App() {
     return (
         <div className="App">
             {/* TODO: Add Google LogIn Button */}
+            <GoogleSignInButton/>
             {renderList}
             <form 
                 className={classes.root} 
